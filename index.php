@@ -1,10 +1,10 @@
 <?php
 
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Vox\Treinamento\Exercicio1\Cafe;
 use Vox\Treinamento\Exercicio1\Exercicio1Extension;
+use Vox\Treinamento\Exercicio1\PedidoRenderer;
 
 require 'vendor/autoload.php';
 
@@ -17,8 +17,22 @@ $container->loadFromExtension($extension->getAlias());
 //$loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/Resources/config'));
 //$loader->load('services.yml');
 
+$container->setParameter('acucar.valor', 5);
+
 $container->compile();
 
-$tm = $container->get('teste_manager');
+$pedido = $container->get('pedido');
+$impressora = new PedidoRenderer();
+$pedido->attach($impressora);
 
-var_dump($tm);
+$cafe1 = new Cafe();
+$leite = $container->get('leite');
+$cafe1->addAdicional($leite);
+
+$cafe2 = new Cafe();
+$acucar = $container->get('acucar');
+$cafe2->addAdicional($acucar);
+
+$pedido->addCafe($cafe1)
+        ->addCafe($cafe2);
+$pedido->finalizar();

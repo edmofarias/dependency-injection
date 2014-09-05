@@ -1,12 +1,22 @@
 parameters:
-    # ...
-    mailer.transport: sendmail
+    cafe.class: "Vox\Treinamento\Exercicio1\Cafe"
+    leite.class: "Vox\Treinamento\Exercicio1\\Leite"
+    acucar.class: "Vox\Treinamento\Exercicio1\Acucar"
+    leite.valor: 2
+    acucar.valor: 1
+    pedido.class: "Vox\Treinamento\Exercicio1\\Pedido"
 
 services:
-    teste:
-        class:     "Vox\Treinamento\DependencyInjection\Teste"
-
-    teste_manager:
-        class:     "Vox\Treinamento\DependencyInjection\TesteManager"
-        arguments: ["@teste"]
+    pedido:
+        class: "%pedido.class%"
         
+    cafe:
+        class: "%cafe.class%"
+        
+    leite:
+        class: "%leite.class%"
+        arguments: ["%leite.valor%"]
+        
+    acucar:
+        class: "%acucar.class%"
+        arguments: ["%acucar.valor%"]
